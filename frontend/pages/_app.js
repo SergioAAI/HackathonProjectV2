@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }) {
           colorBackgroundPrimaryDarker: 'rgb(56, 86, 21)',
           colorBackgroundPrimaryLighter: 'rgb(154,199,232)',
           colorBackgroundPrimaryLightest: 'rgb(197, 223, 242)',
+          colorBackgroundGradient: 'rgb(0,0,0)',
         },
       }}
     >

@@ -36,106 +36,112 @@ const Delay = () => {
     // });
   }
   return (
-    <div>
-      <Grid gutter="space30" backgroundColor="colorBackgroundPrimaryDarker">
-        <Column span={8} offset={2}>
-          <Card padding="space70">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Box margin="space80">
-                <Label htmlFor="name" required>
-                  Name
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="ACGCUKVUK"
-                  onChange=""
-                  {...register('name')}
-                  required
-                />
-              </Box>
-
-              <Grid gutter="space20">
-                <Column>
-                  <Box margin="space80">
-                    <Label htmlFor="number" required>
-                      From Number
-                    </Label>
-                    <Input
-                      id="from-number"
-                      name="from-number"
-                      type="number"
-                      placeholder="1378683631"
-                      onChange=""
-                      {...register('from-number')}
-                      required
-                    />
-                  </Box>
-                </Column>
-
-                <Column>
-                  <Box margin="space80">
-                    <Label htmlFor="number" required>
-                      To Number
-                    </Label>
-                    <Input
-                      id="to-number"
-                      name="to-number"
-                      type="number"
-                      placeholder="1378683631"
-                      onChange=""
-                      {...register('to-number')}
-                      required
-                    />
-                  </Box>
-                </Column>
-              </Grid>
-              <Controller
-                control={control}
-                name="DatePicked"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <RequiredDatePicker
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    selected={value}
+    <div className={styles.bg}>
+      <Box backgroundColor="colorBackgroundGradient">
+        <Grid gutter="space30">
+          <Column span={8} offset={2}>
+            <Card padding="space70">
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Box margin="space80">
+                  <Label htmlFor="name" required>
+                    Name
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="ACGCUKVUK"
+                    onChange=""
+                    {...register('name')}
+                    required
                   />
-                )}
-              />
-              <Controller
-                control={control}
-                name="TimePicked"
-                render={({ field: { onChange, onBlur } }) => (
-                  <RequiredTimePicker onChange={onChange} onBlur={onBlur} />
-                )}
-              />
+                </Box>
 
-              <Grid gutter="space10">
-                <Column>
-                  <Flex hAlignContent="center">
-                    <Flex>
-                      <Button variant="secondary" size="small">
-                        Cancel
-                      </Button>
-                    </Flex>
-                  </Flex>
-                </Column>
-                <Column>
-                  <Flex hAlignContent="center">
-                    <Flex>
-                      <Button variant="destructive" size="small" type="submit">
-                        Submit
-                      </Button>
-                    </Flex>
-                  </Flex>
-                </Column>
-              </Grid>
+                <Grid gutter="space20">
+                  <Column>
+                    <Box margin="space80">
+                      <Label htmlFor="number" required>
+                        From Number
+                      </Label>
+                      <Input
+                        id="from-number"
+                        name="from-number"
+                        type="number"
+                        placeholder="1378683631"
+                        onChange=""
+                        {...register('from-number')}
+                        required
+                      />
+                    </Box>
+                  </Column>
 
-              <StatusToast />
-            </form>
-          </Card>
-        </Column>
-      </Grid>
+                  <Column>
+                    <Box margin="space80">
+                      <Label htmlFor="number" required>
+                        To Number
+                      </Label>
+                      <Input
+                        id="to-number"
+                        name="to-number"
+                        type="number"
+                        placeholder="1378683631"
+                        onChange=""
+                        {...register('to-number')}
+                        required
+                      />
+                    </Box>
+                  </Column>
+                </Grid>
+                <Controller
+                  control={control}
+                  name="DatePicked"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <RequiredDatePicker
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      selected={value}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="TimePicked"
+                  render={({ field: { onChange, onBlur } }) => (
+                    <RequiredTimePicker onChange={onChange} onBlur={onBlur} />
+                  )}
+                />
+
+                <Grid gutter="space10">
+                  <Column>
+                    <Flex hAlignContent="center">
+                      <Flex>
+                        <Button variant="secondary" size="small">
+                          Cancel
+                        </Button>
+                      </Flex>
+                    </Flex>
+                  </Column>
+                  <Column>
+                    <Flex hAlignContent="center">
+                      <Flex>
+                        <Button
+                          variant="destructive"
+                          size="small"
+                          type="submit"
+                        >
+                          Submit
+                        </Button>
+                      </Flex>
+                    </Flex>
+                  </Column>
+                </Grid>
+
+                <StatusToast />
+              </form>
+            </Card>
+          </Column>
+        </Grid>
+      </Box>
     </div>
   );
 };

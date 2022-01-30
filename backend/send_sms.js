@@ -10,6 +10,7 @@ const client = require('twilio')(accountSid, authToken);
 const schedule = require('node-schedule');
 var callsid;
 var recordingsid;
+var requestObject;
 
 const sendMessage = (req, res) => {
   client.messages
@@ -36,30 +37,61 @@ const getRecording = (req, res) => {
   client.calls
     .create({
       record: true,
+      recordingStatusCallbackMethod: 'POST',
+      recordingStatusCallback:
+        'https://ohboythisdomainwow.loca.lt/text/setTimer',
       url: 'http://demo.twilio.com/docs/voice.xml',
       from: twilioNumber,
       to: `+1${req.body.ToNumber}`,
     })
     .then((call) => (callsid = call.sid));
+  requestObject = req.body;
+  //console.log(call.subresourceUris.recordings)
 
+  //callsid = call.sid
   //grab json file from here and read key values sid:CAXXXXXXXX
-  client
+  /*client
     .calls(callsid)
     .recordings.create()
-    .then((recording) => (recordingsid = recording.sid));
+    .then((recording) => (recordingsid = recording.sid));*/
   res.sendStatus(200);
 };
 
-const setTimer = (req, res) => {
-  const date = new Date(2022, 0, 29, 19, 24, 0);
+const setTimer = async (req, res) => {
+  const response = await fetch(
+    `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Calls/${callsid}/Recordings.json`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization:
+          'Basic ' +
+          Buffer.from(accountSid + ':' + authToken).toString('base64'),
+      },
+    }
+  );
+  const data = await response.json();
+  recordingsid = data.recordings[0].sid;
+  const date = new Date(2022, 0, 30, 3, 17, 30);
   const job = schedule.scheduleJob(date, () => {
-    console.log('The answer to life is th..');
+    // console.log(recordingsid);
+    console.log(requestObject.ToNumber);
+    client.messages
+      .create({
+        body: 'This is from sendRecording',
+        from: twilioNumber,
+        mediaUrl: [
+          // 'https://api.twilio.com/2010-04-01/Accounts/AC13b6b79b9556236db2d1d0fe639c1759/Recordings/RE93f31679c75eb9fd9e666cc8ffb8dc5a.mp3',
+          `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/${recordingsid}.mp3`,
+        ],
+        to: `+1${requestObject.ToNumber}`,
+      })
+      .then((message) => console.log(message.sid));
   });
   console.log(job);
   res.sendStatus(200);
 };
 const sendRecording = async (req, res) => {
-  console.log(Object.keys(client.recordings).length);
+  console.log(recordingsid);
 
   client.messages
     .create({
@@ -67,7 +99,7 @@ const sendRecording = async (req, res) => {
       from: '+15818905304',
       mediaUrl: [
         //'https://api.twilio.com/2010-04-01/Accounts/AC13b6b79b9556236db2d1d0fe639c1759/Recordings/RE93f31679c75eb9fd9e666cc8ffb8dc5a.mp3',
-        `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/${recordingsid}.mp3`,
+        `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/${recordingsid}.mp3'`,
       ],
       to: `+1${req.body.ToNumber}`,
     })
